@@ -1,3 +1,4 @@
+"use client";
 import {
   ArrowRight,
   CheckCircle,
@@ -8,9 +9,49 @@ import {
   Users,
   Zap,
 } from "lucide-react";
+import { useEffect } from "react";
 
 // This is the page.tsx component
 export default function EvenUpWebsite() {
+  useEffect(() => {
+    // Set page title
+    document.title = "EvenUp - Split Bills, Stay Even | Made in India";
+
+    // Create and set favicon
+    const setFavicon = () => {
+      // Remove existing favicons
+      const existingFavicons = document.querySelectorAll("link[rel*='icon']");
+      existingFavicons.forEach((favicon) => favicon.remove());
+
+      // Create SVG favicon
+      const svg = `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+          <defs>
+            <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#7c3aed;stop-opacity:1" />
+              <stop offset="100%" style="stop-color:#5b21b6;stop-opacity:1" />
+            </linearGradient>
+          </defs>
+          <rect width="100" height="100" rx="20" fill="url(#grad)"/>
+          <text x="50" y="70" font-size="60" font-weight="bold" fill="white" text-anchor="middle" font-family="Arial, sans-serif">E</text>
+        </svg>
+      `;
+
+      const favicon = document.createElement("link");
+      favicon.rel = "icon";
+      favicon.type = "image/svg+xml";
+      favicon.href = "data:image/svg+xml," + encodeURIComponent(svg);
+      document.head.appendChild(favicon);
+
+      // Add apple touch icon
+      const appleTouchIcon = document.createElement("link");
+      appleTouchIcon.rel = "apple-touch-icon";
+      appleTouchIcon.href = "data:image/svg+xml," + encodeURIComponent(svg);
+      document.head.appendChild(appleTouchIcon);
+    };
+
+    setFavicon();
+  }, []);
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white">
       {/* Navigation */}
