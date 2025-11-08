@@ -1,16 +1,1 @@
-/* app/globals.css - Tailwind v4 */
 @import "tailwindcss";
-
-@import "tailwindcss/preflight";
-@import "tailwindcss/utilities";
-
-/* Global variables */
-:root {
-  --page-bg: #f8fafc;
-}
-
-/* small custom utilities */
-.hero-glass {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
-  backdrop-filter: blur(6px);
-}

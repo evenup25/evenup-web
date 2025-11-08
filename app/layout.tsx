@@ -1,19 +1,16 @@
-// app/layout.tsx
-import type { ReactNode } from "react";
+import type { Metadata } from "next";
 import "./globals.css";
 
-export const metadata = {
-  title: "EvenUp — Split expenses the smart way",
-  description: "EvenUp — settle shared bills, track who owes who, and keep friendships tidy.",
+export const metadata: Metadata = {
+  title: "EvenUp - Split Bills, Stay Even",
+  description:
+    "The easiest way to share expenses with friends, family, and roommates. Made in India.",
 };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <head />
-      <body className="antialiased bg-gray-50 text-slate-900">
-        <div className="min-h-screen flex flex-col">{children}</div>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
