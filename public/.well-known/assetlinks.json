@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "in.evenup.app",
+      "sha256_cert_fingerprints": [
+        "01:86:F5:B0:16:D0:E3:13:97:E7:CE:AA:DB:CA:38:04:9F:29:EB:90:2A:2E:16:C5:01:13:87:32:71:FD:41:83"
+      ]
+    }
+  }
+]
