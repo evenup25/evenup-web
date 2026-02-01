@@ -8,17 +8,24 @@ export default function InvitePage() {
     const token = params.get('token');
     const friendId = params.get('friend_id');
     const type = params.get('type'); // friend | group
+    const referrerId = params.get('referrer_id'); // 👈 1. Read the Referrer ID
 
     if (!token) return;
 
     let deepLink = '';
 
+    // 2. Build the Base Link
     if (type === 'friend' && friendId) {
       deepLink = `evenup://friends/invite/${friendId}?token=${token}`;
     } else if (type === 'group' && friendId) {
       deepLink = `evenup://groups/invite/${friendId}?token=${token}`;
     } else {
       deepLink = `evenup://groups/invite?token=${token}`;
+    }
+
+    // 3. Append Referrer ID if it exists
+    if (referrerId) {
+      deepLink += `&referrer_id=${referrerId}`;
     }
 
     // Try opening the app
