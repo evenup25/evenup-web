@@ -10,6 +10,7 @@
     "export": "next build"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.95.3",
     "lucide-react": "^0.553.0",
     "next": "16.0.1",
     "postcss": "^8.5.6",
