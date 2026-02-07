@@ -26,6 +26,7 @@ jobs:
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ vars.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          NEXT_PUBLIC_APP_SCHEME: ${{ vars.NEXT_PUBLIC_APP_SCHEME }}
           NODE_ENV: production
 
       - name: Deploy
