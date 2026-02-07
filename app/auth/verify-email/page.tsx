@@ -7,30 +7,35 @@ export default function VerifyEmailPage() {
   const [status, setStatus] = useState<"loading" | "success" | "expired">("loading");
 
   useEffect(() => {
-    async function run() {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+    (async () => {
+      const { data } = await supabase.auth.getSession();
+      const session = data.session;
 
-      if (!user || !user.email_confirmed_at) {
+      if (!session?.user?.email_confirmed_at) {
         setStatus("expired");
         return;
       }
 
       await supabase
         .from("user_profiles")
-        .update({
-          email_verified_at: user.email_confirmed_at,
-        })
-        .eq("id", user.id);
+        .update({ email_verified_at: session.user.email_confirmed_at })
+        .eq("id", session.user.id)
+        .is("email_verified_at", null);
 
       setStatus("success");
-    }
-
-    run();
+    })();
   }, []);
 
-  if (status === "loading") return <p>Verifying email…</p>;
-  if (status === "success") return <p>Email verified successfully ✅</p>;
-  return <p>Verification link expired or already used ❌</p>;
+  if (status === "loading") return <p>Verifying…</p>;
+
+  if (status === "success") {
+    return (
+      <div>
+        <h2>Email verified ✅</h2>
+        <a href="evenup://auth/verified">Open App</a>
+      </div>
+    );
+  }
+
+  return <p>Link expired ❌</p>;
 }
