@@ -57,6 +57,9 @@ export default function VerifyEmailPage() {
           p_verified_channel: "email",
         });
 
+        // After materialize_user_profile succeeds
+        await supabase.auth.signOut();
+
         if (rpcError) {
           if (rpcError.message?.includes("account_deleted")) {
             setStatus("deleted");
