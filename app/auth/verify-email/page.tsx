@@ -18,7 +18,7 @@ export default function VerifyEmailPage() {
     (async () => {
       try {
         /* -------------------------------------------------
-         * 0️⃣ Handle reused / expired magic link
+         * 0️⃣ Handle expired / reused link
          * ------------------------------------------------- */
         if (window.location.hash.includes("error=access_denied")) {
           setStatus("expired");
@@ -29,17 +29,16 @@ export default function VerifyEmailPage() {
          * 1️⃣ Hydrate session from magic link
          * ------------------------------------------------- */
         const { data, error } = await supabase.auth.getSession();
-
         if (error || !data.session?.user) {
           setStatus("expired");
           return;
         }
 
-        const user = data.session.user;
-        console.log("user", user);
+        const session = data.session;
+        const user = session.user;
 
         /* -------------------------------------------------
-         * 2️⃣ Ensure email is verified
+         * 2️⃣ Ensure email verified
          * ------------------------------------------------- */
         if (!user.email_confirmed_at) {
           setStatus("expired");
@@ -47,18 +46,21 @@ export default function VerifyEmailPage() {
         }
 
         /* -------------------------------------------------
-         * 3️⃣ Materialize / claim profile (idempotent)
+         * 3️⃣ Load pending nickname (optional)
+         * ------------------------------------------------- */
+        const pendingNickname =
+          typeof window !== "undefined" ? localStorage.getItem("pending_nickname") : null;
+
+        /* -------------------------------------------------
+         * 4️⃣ Materialize / claim profile (IDEMPOTENT)
          * ------------------------------------------------- */
         const { error: rpcError } = await supabase.rpc("materialize_user_profile", {
           p_profile_id: user.id,
           p_email: user.email,
           p_phone: null,
-          p_nickname: null,
+          p_nickname: pendingNickname,
           p_verified_channel: "email",
         });
-
-        // After materialize_user_profile succeeds
-        await supabase.auth.signOut();
 
         if (rpcError) {
           if (rpcError.message?.includes("account_deleted")) {
@@ -68,7 +70,20 @@ export default function VerifyEmailPage() {
           throw rpcError;
         }
 
+        /* -------------------------------------------------
+         * 5️⃣ Bridge session to Expo app
+         * ------------------------------------------------- */
+        const redirectUrl =
+          `evenup://auth/verified` +
+          `?access_token=${session.access_token}` +
+          `&refresh_token=${session.refresh_token}`;
+
         setStatus("verified");
+
+        // Give UI 1 tick, then redirect
+        setTimeout(() => {
+          window.location.href = redirectUrl;
+        }, 300);
       } catch (err: any) {
         console.error("[verify-email]", err);
         setMessage(err?.message ?? "Unexpected error");
@@ -92,11 +107,7 @@ export default function VerifyEmailPage() {
     return (
       <Center>
         <h2>✅ Email verified</h2>
-        <p>Your account is now active.</p>
-
-        <a href="evenup://auth/verified" style={button}>
-          Open App
-        </a>
+        <p>Opening the app…</p>
       </Center>
     );
   }
@@ -105,7 +116,7 @@ export default function VerifyEmailPage() {
     return (
       <Center>
         <h2>❌ Link expired</h2>
-        <p>This email link is invalid or already used. Please request a new verification email.</p>
+        <p>This link is invalid or already used.</p>
       </Center>
     );
   }
@@ -114,7 +125,7 @@ export default function VerifyEmailPage() {
     return (
       <Center>
         <h2>🚫 Account deleted</h2>
-        <p>This account was deleted. Please sign up again to continue.</p>
+        <p>Please sign up again.</p>
       </Center>
     );
   }
@@ -147,13 +158,3 @@ function Center({ children }: { children: React.ReactNode }) {
     </main>
   );
 }
-
-const button: React.CSSProperties = {
-  marginTop: 16,
-  padding: "12px 20px",
-  background: "#2563eb",
-  color: "#fff",
-  borderRadius: 8,
-  textDecoration: "none",
-  fontWeight: 600,
-};
