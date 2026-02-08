@@ -62,10 +62,8 @@ export default function VerifyEmailPage() {
         }
 
         /* 4️⃣ Build deep link */
-        const redirectUrl =
-          `evenup://auth/verified` +
-          `?access_token=${session.access_token}` +
-          `&refresh_token=${session.refresh_token}`;
+        const email = session.user.email;
+        const redirectUrl = `evenup://auth/verified?verified=1&email=${encodeURIComponent(email ?? "")}`;
 
         /* 5️⃣ 🔥 CRITICAL: destroy WEB session */
         await supabase.auth.signOut();
