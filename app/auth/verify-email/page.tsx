@@ -60,6 +60,10 @@ export default function VerifyEmailPage() {
           p_verified_channel: "email",
         });
 
+        await supabase.rpc("mark_email_verified", {
+          p_user_id: user.id,
+        });
+
         if (rpcError) {
           if (rpcError.message?.includes("account_deleted")) {
             setStatus("deleted");
@@ -103,7 +107,7 @@ export default function VerifyEmailPage() {
       <div className="w-full max-w-md rounded-2xl bg-white shadow-xl p-8 text-center">
         {status === "loading" && <Title>Verifying your email…</Title>}
 
-        {status === "verified" && (
+        {status === "expired" && (
           <>
             <Icon success />
             <Title>Email verified 🎉</Title>
