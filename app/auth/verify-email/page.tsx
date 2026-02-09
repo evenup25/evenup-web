@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
@@ -13,6 +13,13 @@ type Status = "loading" | "verified" | "expired" | "deleted" | "error";
 export default function VerifyEmailPage() {
   const [status, setStatus] = useState<Status>("loading");
   const [message, setMessage] = useState("");
+  const [countdown, setCountdown] = useState(5);
+  const [deepLink, setDeepLink] = useState<string | null>(null);
+
+  const isMobile = useMemo(() => {
+    if (typeof navigator === "undefined") return false;
+    return /android|iphone|ipad|ipod/i.test(navigator.userAgent);
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -62,17 +69,14 @@ export default function VerifyEmailPage() {
         }
 
         /* 4️⃣ Build deep link */
-        const email = session.user.email;
-        const redirectUrl = `evenup://auth/verified?verified=1&email=${encodeURIComponent(email ?? "")}`;
+        const email = user.email ?? "";
+        const link = `evenup://auth/verified?verified=1&email=${encodeURIComponent(email)}`;
+        setDeepLink(link);
 
-        /* 5️⃣ 🔥 CRITICAL: destroy WEB session */
+        /* 5️⃣ Kill WEB session */
         await supabase.auth.signOut();
 
-        /* 6️⃣ Redirect to app */
         setStatus("verified");
-        setTimeout(() => {
-          window.location.href = redirectUrl;
-        }, 200);
       } catch (err: any) {
         console.error("[verify-email]", err);
         setMessage(err?.message ?? "Unexpected error");
@@ -81,37 +85,111 @@ export default function VerifyEmailPage() {
     })();
   }, []);
 
-  if (status === "loading") {
-    return <Center>Verifying your email…</Center>;
-  }
+  /* 6️⃣ Mobile auto-redirect countdown */
+  useEffect(() => {
+    if (status !== "verified" || !isMobile || !deepLink) return;
 
-  if (status === "verified") {
-    return <Center>Opening the app…</Center>;
-  }
+    if (countdown === 0) {
+      window.location.href = deepLink;
+      return;
+    }
 
-  if (status === "expired") {
-    return <Center>Link expired or already used.</Center>;
-  }
+    const t = setTimeout(() => setCountdown((c) => c - 1), 1000);
+    return () => clearTimeout(t);
+  }, [status, isMobile, deepLink, countdown]);
 
-  if (status === "deleted") {
-    return <Center>Account deleted. Please sign up again.</Center>;
-  }
+  return (
+    <main className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-purple-100 flex items-center justify-center px-4">
+      <div className="w-full max-w-md rounded-2xl bg-white shadow-xl p-8 text-center">
+        {status === "loading" && <Title>Verifying your email…</Title>}
 
-  return <Center>{message || "Verification failed."}</Center>;
+        {status === "verified" && (
+          <>
+            <Icon success />
+            <Title>Email verified 🎉</Title>
+
+            {isMobile ? (
+              <>
+                <p className="mt-2 text-gray-600">
+                  Opening EvenUp app in <span className="font-semibold">{countdown}s</span>
+                </p>
+
+                <PrimaryButton className="mt-6" onClick={() => (window.location.href = deepLink!)}>
+                  Open app now
+                </PrimaryButton>
+              </>
+            ) : (
+              <>
+                <p className="mt-3 text-gray-600">Your email has been verified successfully.</p>
+                <p className="mt-1 text-gray-600">You can now log in from the EvenUp mobile app.</p>
+
+                <PrimaryButton className="mt-6" disabled>
+                  Open the EvenUp app
+                </PrimaryButton>
+              </>
+            )}
+          </>
+        )}
+
+        {status === "expired" && (
+          <>
+            <Icon />
+            <Title>Link expired</Title>
+            <p className="mt-2 text-gray-600">This verification link is invalid or already used.</p>
+          </>
+        )}
+
+        {status === "deleted" && (
+          <>
+            <Icon />
+            <Title>Account deleted</Title>
+            <p className="mt-2 text-gray-600">
+              This account no longer exists. Please sign up again.
+            </p>
+          </>
+        )}
+
+        {status === "error" && (
+          <>
+            <Icon />
+            <Title>Verification failed</Title>
+            <p className="mt-2 text-red-600">{message}</p>
+          </>
+        )}
+      </div>
+    </main>
+  );
 }
 
-function Center({ children }: { children: React.ReactNode }) {
+/* ---------- UI Bits ---------- */
+
+function Title({ children }: { children: React.ReactNode }) {
+  return <h1 className="text-2xl font-bold text-gray-900">{children}</h1>;
+}
+
+function PrimaryButton({
+  children,
+  className = "",
+  ...props
+}: React.ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
-    <main
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        textAlign: "center",
-      }}
+    <button
+      {...props}
+      className={`w-full rounded-xl bg-purple-600 px-4 py-3 text-white font-medium hover:bg-purple-700 transition disabled:opacity-50 ${className}`}
     >
       {children}
-    </main>
+    </button>
+  );
+}
+
+function Icon({ success }: { success?: boolean }) {
+  return (
+    <div
+      className={`mx-auto mb-4 h-12 w-12 rounded-full flex items-center justify-center ${
+        success ? "bg-green-100 text-green-600" : "bg-purple-100 text-purple-600"
+      }`}
+    >
+      {success ? "✓" : "!"}
+    </div>
   );
 }
