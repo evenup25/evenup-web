@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 
+// Initialize Supabase Client
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -24,13 +25,13 @@ export default function VerifyEmailPage() {
   useEffect(() => {
     (async () => {
       try {
-        /* 0️⃣ Expired / reused link */
+        /* 0️⃣ Expired / reused link check */
         if (window.location.hash.includes("error=access_denied")) {
           setStatus("expired");
           return;
         }
 
-        /* 1️⃣ Hydrate session from magic link */
+        /* 1️⃣ Hydrate session from magic link (Exchange token) */
         const { data, error } = await supabase.auth.getSession();
         if (error || !data.session?.user) {
           setStatus("expired");
@@ -40,13 +41,14 @@ export default function VerifyEmailPage() {
         const session = data.session;
         const user = session.user;
 
-        /* 2️⃣ Must be email verified */
+        /* 2️⃣ Verify Email Status */
         if (!user.email_confirmed_at) {
           setStatus("expired");
           return;
         }
 
-        /* 3️⃣ Materialize profile (IDEMPOTENT) */
+        /* 3️⃣ Materialize profile (The God Function) */
+        // This ensures the profile exists and is 'active' before the app opens.
         const nickname =
           (user.user_metadata?.nickname as string | null) ??
           (user.user_metadata?.name as string | null) ??
@@ -60,24 +62,24 @@ export default function VerifyEmailPage() {
           p_verified_channel: "email",
         });
 
-        await supabase.rpc("mark_email_verified", {
-          p_user_id: user.id,
-        });
-
         if (rpcError) {
           if (rpcError.message?.includes("account_deleted")) {
             setStatus("deleted");
             return;
           }
+          // If collision happens (email_exists), we show it.
           throw rpcError;
         }
 
-        /* 4️⃣ Build deep link */
+        /* 4️⃣ Build Deep Link -> Redirect to LOGIN */
+        // 🛠️ FIX: Changed path to /login (which maps to app/(auth)/login.tsx)
         const email = user.email ?? "";
-        const link = `evenup://auth/verified?verified=1&email=${encodeURIComponent(email)}`;
+        // Ensure this matches your scheme in app.json (scheme: "evenup")
+        const link = `evenup:///(auth)/login?verified=1&email=${encodeURIComponent(email)}`;
         setDeepLink(link);
 
-        /* 5️⃣ Kill WEB session */
+        /* 5️⃣ Cleanup Web Session */
+        // We sign out on web so the token doesn't linger in the browser.
         await supabase.auth.signOut();
 
         setStatus("verified");
@@ -89,7 +91,7 @@ export default function VerifyEmailPage() {
     })();
   }, []);
 
-  /* 6️⃣ Mobile auto-redirect countdown */
+  /* 6️⃣ Mobile Auto-Redirect */
   useEffect(() => {
     if (status !== "verified" || !isMobile || !deepLink) return;
 
@@ -107,7 +109,7 @@ export default function VerifyEmailPage() {
       <div className="w-full max-w-md rounded-2xl bg-white shadow-xl p-8 text-center">
         {status === "loading" && <Title>Verifying your email…</Title>}
 
-        {status === "expired" && (
+        {status === "verified" && (
           <>
             <Icon success />
             <Title>Email verified 🎉</Title>
@@ -117,7 +119,6 @@ export default function VerifyEmailPage() {
                 <p className="mt-2 text-gray-600">
                   Opening EvenUp app in <span className="font-semibold">{countdown}s</span>
                 </p>
-
                 <PrimaryButton className="mt-6" onClick={() => (window.location.href = deepLink!)}>
                   Open app now
                 </PrimaryButton>
@@ -126,7 +127,6 @@ export default function VerifyEmailPage() {
               <>
                 <p className="mt-3 text-gray-600">Your email has been verified successfully.</p>
                 <p className="mt-1 text-gray-600">You can now log in from the EvenUp mobile app.</p>
-
                 <PrimaryButton className="mt-6" disabled>
                   Open the EvenUp app
                 </PrimaryButton>
@@ -165,7 +165,7 @@ export default function VerifyEmailPage() {
   );
 }
 
-/* ---------- UI Bits ---------- */
+/* ---------- UI Components ---------- */
 
 function Title({ children }: { children: React.ReactNode }) {
   return <h1 className="text-2xl font-bold text-gray-900">{children}</h1>;
