@@ -57,3 +57,6 @@ Desktop.ini
 
 # GitHub Pages workflow caches
 .github/workflows/*.log
+
+# Add this exception:
+!app/admin/logs/
