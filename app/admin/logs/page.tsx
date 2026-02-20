@@ -375,11 +375,9 @@ export default function LogsPage() {
                             {log.stack ? (
                               <div className="mt-3 space-y-2 text-sm">
                                 <p className="font-medium text-slate-900">Stack trace</p>
-                                <div className="max-w-5xl overflow-x-hidden">
-                                  <pre className="p-2 block max-w-full overflow-x-auto rounded-lg border border-slate-200 bg-slate-50 p-3 text-xs whitespace-pre text-slate-700">
-                                    {log.stack}
-                                  </pre>
-                                </div>
+                                <pre className="p-2 block max-w-full overflow-x-auto rounded-lg border border-slate-200 bg-slate-50 p-3 text-xs whitespace-pre text-slate-700">
+                                  {log.stack}
+                                </pre>
                               </div>
                             ) : null}
 
