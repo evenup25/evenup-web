@@ -34,6 +34,10 @@ const pageSizeOptions = [10, 25, 50, 100] as const;
 export default function LogsPage() {
   const [logs, setLogs] = useState<LogEntry[]>([]);
   const [expandedLogId, setExpandedLogId] = useState<string | null>(null);
+  const [copyFeedback, setCopyFeedback] = useState<{
+    key: string;
+    status: "success" | "error";
+  } | null>(null);
   const [totalCount, setTotalCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -127,6 +131,45 @@ export default function LogsPage() {
     setSearch("");
     setPage(1);
   };
+
+  const copyToClipboard = useCallback(async (key: string, value: string) => {
+    const fallbackCopy = () => {
+      const textarea = document.createElement("textarea");
+      textarea.value = value;
+      textarea.setAttribute("readonly", "");
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+      const copied = document.execCommand("copy");
+      document.body.removeChild(textarea);
+      return copied;
+    };
+
+    let copied = false;
+    if (navigator.clipboard?.writeText) {
+      try {
+        await navigator.clipboard.writeText(value);
+        copied = true;
+      } catch {
+        copied = fallbackCopy();
+      }
+    } else {
+      copied = fallbackCopy();
+    }
+
+    setCopyFeedback({
+      key,
+      status: copied ? "success" : "error",
+    });
+
+    window.setTimeout(() => {
+      setCopyFeedback((current) => (current?.key === key ? null : current));
+    }, 1400);
+  }, []);
+
+  const getCopyStatus = (key: string) => (copyFeedback?.key === key ? copyFeedback.status : null);
 
   return (
     <AdminGuard
@@ -366,7 +409,13 @@ export default function LogsPage() {
                             </dl>
 
                             <div className="mt-3 space-y-2 text-sm">
-                              <p className="font-medium text-slate-900">Message</p>
+                              <div className="flex items-center justify-between gap-2">
+                                <p className="font-medium text-slate-900">Message</p>
+                                <CopyButton
+                                  status={getCopyStatus(`${log.id}-message`)}
+                                  onClick={() => void copyToClipboard(`${log.id}-message`, log.message)}
+                                />
+                              </div>
                               <pre className="p-2 max-w-full overflow-y-auto rounded-lg border border-slate-200 bg-slate-50 p-3 text-xs whitespace-pre-wrap break-words text-slate-700">
                                 {log.message}
                               </pre>
@@ -374,7 +423,13 @@ export default function LogsPage() {
 
                             {log.stack ? (
                               <div className="mt-3 space-y-2 text-sm">
-                                <p className="font-medium text-slate-900">Stack trace</p>
+                                <div className="flex items-center justify-between gap-2">
+                                  <p className="font-medium text-slate-900">Stack trace</p>
+                                  <CopyButton
+                                    status={getCopyStatus(`${log.id}-stack`)}
+                                    onClick={() => void copyToClipboard(`${log.id}-stack`, log.stack ?? "")}
+                                  />
+                                </div>
                                 <pre className="p-2 block max-w-full overflow-x-auto rounded-lg border border-slate-200 bg-slate-50 p-3 text-xs whitespace-pre text-slate-700">
                                   {log.stack}
                                 </pre>
@@ -382,7 +437,18 @@ export default function LogsPage() {
                             ) : null}
 
                             <div className="mt-3 space-y-2 text-sm">
-                              <p className="font-medium text-slate-900">Extra payload</p>
+                              <div className="flex items-center justify-between gap-2">
+                                <p className="font-medium text-slate-900">Extra payload</p>
+                                <CopyButton
+                                  status={getCopyStatus(`${log.id}-payload`)}
+                                  onClick={() =>
+                                    void copyToClipboard(
+                                      `${log.id}-payload`,
+                                      JSON.stringify(log.extra ?? {}, null, 2),
+                                    )
+                                  }
+                                />
+                              </div>
                               <pre className="p-2 block max-w-full overflow-x-auto overflow-y-hidden rounded-lg border border-slate-200 bg-slate-50 p-3 text-xs whitespace-pre text-slate-700">
                                 {JSON.stringify(log.extra ?? {}, null, 2)}
                               </pre>
@@ -501,5 +567,29 @@ function Detail({ label, value }: { label: string; value: string }) {
       <dt className="text-xs uppercase tracking-wide text-slate-500">{label}</dt>
       <dd className="mt-1 break-all text-sm text-slate-800">{value}</dd>
     </div>
+  );
+}
+
+function CopyButton({
+  onClick,
+  status,
+}: {
+  onClick: () => void;
+  status: "success" | "error" | null;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`rounded-md border px-2 py-1 text-xs font-medium ${
+        status === "success"
+          ? "border-emerald-300 bg-emerald-50 text-emerald-700"
+          : status === "error"
+            ? "border-red-300 bg-red-50 text-red-700"
+            : "border-slate-300 text-slate-700 hover:bg-slate-100"
+      }`}
+    >
+      {status === "success" ? "Copied" : status === "error" ? "Failed" : "Copy"}
+    </button>
   );
 }
