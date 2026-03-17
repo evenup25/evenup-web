@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { type FormEvent, type ReactNode, useMemo, useState } from "react";
+import { type FormEvent, type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { hasRequiredRole, type AdminRole } from "@/lib/adminRoles";
 import { supabase } from "@/lib/supabaseClient";
 import { useAdminAccess } from "../hooks/useAdminAccess";
@@ -14,8 +14,20 @@ interface AdminGuardProps {
   requiredRole?: AdminRole;
 }
 
+const IDLE_TIMEOUT_MS = 30 * 60 * 1000;
+const ACTIVITY_EVENTS: Array<keyof WindowEventMap> = [
+  "mousemove",
+  "mousedown",
+  "keydown",
+  "scroll",
+  "touchstart",
+  "focus",
+];
+
 const navItems = [
   { href: "/admin", label: "Dashboard" },
+  { href: "/admin/notifications", label: "Notifications" },
+  { href: "/admin/notification-analytics", label: "Notification Analytics" },
   { href: "/admin/logs", label: "Logs" },
   { href: "/admin/roles", label: "Roles" },
 ];
@@ -29,11 +41,51 @@ export default function AdminGuard({
   const pathname = usePathname();
   const { loading, error, session, role } = useAdminAccess();
   const [signOutLoading, setSignOutLoading] = useState(false);
+  const idleTimerRef = useRef<number | null>(null);
+  const lastActivityRef = useRef<number>(0);
 
   const isAllowed = useMemo(() => {
     if (!role) return false;
     return hasRequiredRole(role, requiredRole);
   }, [requiredRole, role]);
+
+  useEffect(() => {
+    if (!session) return;
+    if (typeof window === "undefined") return;
+
+    const resetTimer = () => {
+      lastActivityRef.current = Date.now();
+      if (idleTimerRef.current !== null) {
+        window.clearTimeout(idleTimerRef.current);
+      }
+      idleTimerRef.current = window.setTimeout(() => {
+        const elapsed = Date.now() - lastActivityRef.current;
+        if (elapsed >= IDLE_TIMEOUT_MS) {
+          void supabase.auth.signOut();
+        } else {
+          resetTimer();
+        }
+      }, IDLE_TIMEOUT_MS);
+    };
+
+    const handleActivity = () => {
+      resetTimer();
+    };
+
+    resetTimer();
+    ACTIVITY_EVENTS.forEach((eventName) => {
+      window.addEventListener(eventName, handleActivity, { passive: true });
+    });
+
+    return () => {
+      if (idleTimerRef.current !== null) {
+        window.clearTimeout(idleTimerRef.current);
+      }
+      ACTIVITY_EVENTS.forEach((eventName) => {
+        window.removeEventListener(eventName, handleActivity);
+      });
+    };
+  }, [session?.user.id]);
 
   const handleSignOut = async () => {
     setSignOutLoading(true);
@@ -304,3 +356,4 @@ function AdminSignInCard() {
     </main>
   );
 }
+
