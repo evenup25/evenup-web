@@ -26,6 +26,7 @@ const ACTIVITY_EVENTS: Array<keyof WindowEventMap> = [
 
 const navItems = [
   { href: "/admin", label: "Dashboard" },
+  { href: "/admin/support", label: "Support" },
   { href: "/admin/notifications", label: "Notifications" },
   { href: "/admin/notification-analytics", label: "Notification Analytics" },
   { href: "/admin/logs", label: "Logs" },
