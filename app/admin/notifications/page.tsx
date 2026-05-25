@@ -11,6 +11,13 @@ interface NotificationTemplateRow {
   body_template: string | null;
 }
 
+interface RpcEnvelope<T> {
+  ok: boolean;
+  data?: T;
+  error?: string;
+  message?: string;
+}
+
 const subtypeOptions = [
   "system_announcement",
   "system_info",
@@ -93,11 +100,12 @@ export default function AdminNotificationsPage() {
       return;
     }
 
-    const { data, error } = await supabase
-      .from("notification_templates")
-      .select("subtype,locale,title_template,body_template")
-      .eq("locale", trimmedLocale)
-      .in("subtype", [...subtypeOptions]);
+    const { data, error } = await supabase.rpc("admin_list_notification_templates", {
+      p_payload: {
+        locale: trimmedLocale,
+        subtypes: [...subtypeOptions],
+      },
+    });
 
     if (error) {
       setTemplatesError(error.message);
@@ -105,7 +113,14 @@ export default function AdminNotificationsPage() {
       return;
     }
 
-    const nextMap = (data ?? []).reduce<Record<string, NotificationTemplateRow>>((acc, row) => {
+    const envelope = data as RpcEnvelope<NotificationTemplateRow[]> | null;
+    if (!envelope?.ok) {
+      setTemplatesError(envelope?.message ?? envelope?.error ?? "Unable to load templates.");
+      setTemplatesLoading(false);
+      return;
+    }
+
+    const nextMap = (envelope.data ?? []).reduce<Record<string, NotificationTemplateRow>>((acc, row) => {
       const typedRow = row as NotificationTemplateRow;
       acc[typedRow.subtype] = typedRow;
       return acc;
