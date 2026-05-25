@@ -57,12 +57,20 @@ export async function adminReplyToSupportTicket(params: {
   isInternal?: boolean;
   attachments?: SupportAttachmentInput[];
 }): Promise<AdminTicketMessage> {
-  return callRpc<AdminTicketMessage>("admin_reply_to_support_ticket", {
-    ticket_id: params.ticketId,
-    body: params.body,
-    is_internal: params.isInternal ?? false,
-    attachments: params.attachments,
+  const { data, error } = await supabase.functions.invoke("support-admin-reply", {
+    body: {
+      ticket_id: params.ticketId,
+      body: params.body,
+      is_internal: params.isInternal ?? false,
+      attachments: params.attachments,
+    },
   });
+  if (error) throw new Error(error.message);
+  const envelope = data as RpcEnvelope<AdminTicketMessage> | null;
+  if (!envelope || !envelope.ok || !envelope.data) {
+    throw new Error(envelope?.message ?? envelope?.error ?? "Reply failed");
+  }
+  return envelope.data;
 }
 
 export async function uploadAdminSupportAttachment(params: {
