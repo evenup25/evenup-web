@@ -1,9 +1,60 @@
 @import "tailwindcss";
 
 @theme {
-  --color-purple-50: #faf5ff;
-  --color-purple-100: #f3e8ff;
-  --color-purple-600: #9333ea;
-  --color-purple-700: #7e22ce;
-  --color-purple-800: #6b21a8;
+  --font-sans: var(--font-inter), Inter, sans-serif;
+  --font-display: var(--font-jakarta), "Plus Jakarta Sans", sans-serif;
+}
+
+:root {
+  --color-brand-blue: #2b7fff;
+  --color-brand-blue-alt: #1a6cf0;
+  --color-brand-navy: #0e1e3d;
+  --color-brand-teal: #1690a2;
+  --color-brand-green: #00c48c;
+  --color-brand-amber: #ffb020;
+  --color-brand-red: #ff4757;
+  --color-brand-purple: #7c5cfc;
+
+  --color-bg-canvas: #eff3ff;
+  --color-bg-canvas-alt: #e4ebff;
+  --color-bg-surface: #ffffff;
+  --color-bg-surface-alt: #f6f8fc;
+  --color-text-primary: #0e1e3d;
+  --color-text-secondary: rgba(14, 30, 61, 0.72);
+  --color-text-tertiary: rgba(14, 30, 61, 0.52);
+  --color-text-inverse-muted: rgba(232, 237, 255, 0.72);
+  --color-border-subtle: rgba(14, 30, 61, 0.12);
+  --color-border-strong: rgba(14, 30, 61, 0.2);
+  --color-action-primary: #2b7fff;
+  --color-action-primary-alt: #1a6cf0;
+  --color-success: #00c48c;
+  --color-warning: #ffb020;
+  --color-danger: #ff4757;
+  --color-owe: #ff7285;
+  --color-get: #34e0a8;
+  --shadow-card: 0 22px 70px rgba(14, 30, 61, 0.12);
+  --shadow-brand: 0 16px 32px rgba(43, 127, 255, 0.22);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--color-bg-canvas);
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+a {
+  text-decoration: none;
+}
+
+::selection {
+  background: rgba(43, 127, 255, 0.18);
 }
