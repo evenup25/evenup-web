@@ -17,7 +17,7 @@ const DELETE_REQUEST_EMAIL =
 export const metadata: Metadata = {
   title: "Delete your EvenUp account",
   description:
-    "Request deletion of your EvenUp account and understand the cancellation period, deleted data, and retained anonymised records.",
+    "Request deletion of your EvenUp account and understand the review period, deleted data, and retained anonymised records.",
   alternates: {
     canonical: "/delete-account/",
   },
@@ -30,11 +30,11 @@ const steps = [
   },
   {
     title: "Confirm your request",
-    copy: "The app shows your exact cancellation deadline before you confirm the request.",
+    copy: "The app shows your exact review deadline before you confirm the request.",
   },
   {
     title: "Cancel if you change your mind",
-    copy: "Your account stays active during the cancellation period. Return to the same page to cancel before the displayed deadline.",
+    copy: "Your account stays active during the review period. Return to the same page to cancel before the displayed deadline.",
   },
   {
     title: "Deletion completes automatically",
@@ -82,7 +82,7 @@ export default function DeleteAccountPage() {
                 </div>
                 <div>
                   <h2 className="font-display text-xl font-extrabold text-[var(--color-text-primary)]">
-                    Current cancellation period: 30 days
+                    Current review period: 30 days
                   </h2>
                   <p className="mt-2 leading-7 text-[var(--color-text-secondary)]">
                     The exact deadline shown in the app and confirmation email controls your
@@ -165,7 +165,7 @@ export default function DeleteAccountPage() {
             <article className="rounded-[28px] border border-[var(--color-border-subtle)] bg-white p-6 shadow-sm md:col-span-2">
               <Download className="h-7 w-7 text-[var(--color-brand-teal)]" />
               <h2 className="mt-4 font-display text-2xl font-black text-[var(--color-text-primary)]">
-                Before the cancellation deadline
+                Before the review deadline
               </h2>
               <p className="mt-4 leading-7 text-[var(--color-text-secondary)]">
                 You may export your records from Summary. Reviewing balances or settling them is
