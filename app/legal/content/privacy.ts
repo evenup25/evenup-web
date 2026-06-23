@@ -117,19 +117,19 @@ export const PRIVACY_DOCUMENT: LegalDocument = {
         },
         {
           kind: 'paragraph',
-          text: 'The app shows the exact cancellation deadline before you confirm. Under our current standard policy, the cancellation period is 30 days. During this period your account stays active and you can cancel the request from the same Delete Account page.',
+          text: 'The app shows the exact review deadline before you confirm. Under our current standard policy, the review period is 30 days. During this time your account stays active and you can cancel the request from the same Delete Account page.',
         },
         {
           kind: 'bullets',
           items: [
-            'We send a confirmation email when the request is received, a reminder before the cancellation deadline, and a final confirmation after deletion is completed, when a verified email is available.',
-            'You can export your records from Summary before the cancellation deadline.',
+            'We send a confirmation email when the request is received, a reminder before the review deadline, and a final confirmation after deletion is completed, when a verified email is available.',
+            'You can export your records from Summary before the review deadline.',
             'Reviewing or settling balances is optional and does not delay deletion.',
           ],
         },
         {
           kind: 'paragraph',
-          text: 'After the cancellation deadline, cancellation closes and access to the app is restricted. Permanent deletion is completed automatically during a later processing run. Your sign-in identity, profile details, contact details, avatar, notification tokens, private notifications, and private support data are removed from active systems.',
+          text: 'After the review deadline, the request becomes final and access to the app is restricted. Permanent deletion is completed automatically during a later processing run. Your sign-in identity, profile details, contact details, avatar, notification tokens, private notifications, and private support data are removed from active systems.',
         },
         {
           kind: 'note',
@@ -143,7 +143,7 @@ export const PRIVACY_DOCUMENT: LegalDocument = {
       blocks: [
         {
           kind: 'paragraph',
-          text: 'We keep account and personal data while your account is active and through the cancellation period. After final deletion, anonymised shared ledger records may remain for as long as those records are needed by other participants. Minimal deletion audit records, security records, and records required by law may be retained only for those purposes. Backups are rotated and overwritten on their normal schedule. Diagnostic and crash data is typically retained for up to 90 days.',
+          text: 'We keep account and personal data while your account is active and through the review period. After final deletion, anonymised shared ledger records may remain for as long as those records are needed by other participants. Minimal deletion audit records, security records, and records required by law may be retained only for those purposes. Backups are rotated and overwritten on their normal schedule. Diagnostic and crash data is typically retained for up to 90 days.',
         },
       ],
     },
