@@ -2,7 +2,7 @@ import type { LegalDocument } from "../legalDocuments";
 
 export const PRIVACY_DOCUMENT: LegalDocument = {
   title: 'Privacy Policy',
-  effectiveDate: '22 June 2026',
+  effectiveDate: '23 June 2026',
   intro:
     'This policy explains what information EvenUp collects, why we collect it, how we use it, and the controls you have over your data.',
   sections: [
@@ -24,10 +24,11 @@ export const PRIVACY_DOCUMENT: LegalDocument = {
         {
           kind: 'bullets',
           items: [
-            'Account details: your name, phone number, and email — verified by OTP. Avatar/colour preference if you set one.',
+            'Account details: your user ID, name, phone number, and email — verified by OTP. Avatar/colour preference if you set one.',
+            'Contacts: if you allow contacts access, EvenUp reads contact names, phone numbers, and email addresses on your device so you can find and invite people. Your full address book stays on your device. Only the contact details you explicitly choose are sent to EvenUp when you add or invite someone.',
             'Content you add: friends, groups, expenses, balances, settlements, notes, and attachments (e.g., receipt images) you upload.',
-            'Notification tokens: a push token for your device so we can deliver notifications you have opted into.',
-            'Device & diagnostic data: app version, device model, OS, runtime version, and crash/error reports — used to keep the app stable.',
+            'Notification and app identifiers: push tokens, installation identifiers, and session identifiers used to deliver notifications and operate the app.',
+            'Device, interaction & diagnostic data: app version, device model, OS, runtime version, current screen or feature context, and crash/error reports — used to diagnose problems and keep the app stable.',
             'Support data: any messages, screenshots, or device info you send us through Help & Support.',
           ],
         },
@@ -65,9 +66,10 @@ export const PRIVACY_DOCUMENT: LegalDocument = {
         {
           kind: 'bullets',
           items: [
-            'Supabase — hosted database, authentication, file storage.',
-            'Push notification services — Apple Push Notification service (APNs) and Firebase Cloud Messaging (FCM) to deliver notifications.',
-            'Crash and error reporting — to help us diagnose problems in the app.',
+            'Supabase — hosted database, authentication, file storage, and server functions.',
+            'Expo push notification service, Apple Push Notification service (APNs), and Firebase Cloud Messaging (FCM) — to deliver notifications.',
+            'Sentry — crash and error reporting used to diagnose stability problems. Default personal-information collection is disabled.',
+            'Zoho Mail — authentication, invitation, account, and support emails.',
           ],
         },
         {
