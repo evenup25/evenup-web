@@ -31,7 +31,7 @@ export function LegalDocumentPage({ document }: { document: LegalDocument }) {
     <PublicShell>
       <main className="py-12">
         <div className="public-container">
-          <div className="mb-10 rounded-[24px] border border-[var(--color-border-subtle)] bg-[var(--color-bg-surface)] p-6 shadow-[var(--shadow-soft)] sm:p-8">
+          <div className="public-readable mb-10 rounded-[24px] border border-[var(--color-border-subtle)] bg-[var(--color-bg-surface)] p-6 shadow-[var(--shadow-soft)] sm:p-8">
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--color-action-primary)]">
               Effective {document.effectiveDate}
             </p>
@@ -45,13 +45,13 @@ export function LegalDocumentPage({ document }: { document: LegalDocument }) {
             ) : null}
           </div>
 
-          <div className="grid gap-3">
+          <div className="public-readable grid gap-4">
             {document.sections.map((section, sectionIndex) => (
               <details
                 key={section.id}
                 open={sectionIndex === 0}
                 className="group rounded-[20px] border border-[var(--color-border-subtle)] bg-[var(--color-bg-surface)] shadow-sm">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-5 px-5 py-4 marker:hidden sm:px-6">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-5 rounded-[20px] px-5 py-4 marker:hidden sm:px-6">
                   <h2 className="font-display text-lg font-semibold text-[var(--color-text-primary)]">
                     {section.title}
                   </h2>

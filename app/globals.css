@@ -3,6 +3,7 @@
 @theme {
   --font-sans: var(--font-geist), Geist, Inter, sans-serif;
   --font-display: var(--font-geist), Geist, Inter, sans-serif;
+  --font-brand: var(--font-jakarta), "Plus Jakarta Sans", sans-serif;
 }
 
 :root,
@@ -84,7 +85,6 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 5rem;
 }
 
 body {
@@ -96,6 +96,11 @@ body {
 
 a {
   text-decoration: none;
+}
+
+:where(a, button, summary):focus-visible {
+  outline: 3px solid rgba(43, 127, 255, 0.42);
+  outline-offset: 4px;
 }
 
 ::selection {
@@ -110,7 +115,12 @@ a {
 }
 
 .public-anchor {
-  scroll-margin-top: 5rem;
+  scroll-margin-top: 0;
+}
+
+.public-readable {
+  width: 100%;
+  max-width: 960px;
 }
 
 @media (min-width: 640px) {

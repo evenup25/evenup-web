@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Geist, Plus_Jakarta_Sans } from "next/font/google";
 
 import { PublicThemeProvider } from "./components/PublicThemeProvider";
 import "./globals.css";
@@ -7,6 +7,11 @@ import "./globals.css";
 const geist = Geist({
   subsets: ["latin"],
   variable: "--font-geist",
+});
+
+const plusJakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-jakarta",
 });
 
 export const metadata: Metadata = {
@@ -50,7 +55,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className={`${geist.variable} font-sans antialiased`}>
+      <body
+        suppressHydrationWarning
+        className={`${geist.variable} ${plusJakarta.variable} font-sans antialiased`}>
         <PublicThemeProvider>{children}</PublicThemeProvider>
       </body>
     </html>

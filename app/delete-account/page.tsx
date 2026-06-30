@@ -17,7 +17,7 @@ const DELETE_REQUEST_EMAIL =
 export const metadata: Metadata = {
   title: "Delete your EvenUp account",
   description:
-    "Request deletion of your EvenUp account and understand the review period, deleted data, and retained anonymised records.",
+    "Request deletion of your EvenUp account and understand the cooling period, deleted data, and retained anonymised records.",
   alternates: {
     canonical: "/delete-account/",
   },
@@ -30,11 +30,11 @@ const steps = [
   },
   {
     title: "Confirm your request",
-    copy: "The app shows your exact review deadline before you confirm the request.",
+    copy: "The app shows your exact cooling period deadline before you confirm the request.",
   },
   {
-    title: "Cancel if you change your mind",
-    copy: "Your account stays active during the review period. Return to the same page to cancel before the displayed deadline.",
+    title: "Use the cooling period",
+    copy: "Your account remains usable during the cooling period, but deletion is scheduled unless you cancel before the displayed deadline.",
   },
   {
     title: "Deletion completes automatically",
@@ -75,14 +75,14 @@ export default function DeleteAccountPage() {
               </div>
             </div>
 
-            <aside className="rounded-[22px] border border-[rgba(255,176,32,0.35)] bg-[rgba(255,176,32,0.12)] p-6">
+            <aside className="rounded-[22px] border border-[rgba(255,176,32,0.28)] bg-[var(--color-bg-surface)] p-6 shadow-sm">
               <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[var(--color-bg-surface)] text-[var(--color-warning)]">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[var(--color-bg-surface-alt)] text-[var(--color-warning)]">
                   <Clock3 className="h-6 w-6" />
                 </div>
                 <div>
                   <h2 className="font-display text-xl font-bold text-[var(--color-text-primary)]">
-                    Current review period: 30 days
+                    Current cooling period: 30 days
                   </h2>
                   <p className="mt-2 leading-7 text-[var(--color-text-secondary)]">
                     The exact deadline shown in the app and confirmation email controls your
@@ -152,9 +152,9 @@ export default function DeleteAccountPage() {
                 Data that may remain
               </h2>
               <p className="mt-5 leading-7 text-[var(--color-text-secondary)]">
-                Shared expense and settlement records may remain in other participants’ histories
+                Shared expense and settlement records may remain in other participants&apos; histories
                 so their balances and ledgers stay accurate. Your identity is replaced with
-                “Deleted user”.
+                &quot;Deleted user&quot;.
               </p>
               <p className="mt-4 leading-7 text-[var(--color-text-secondary)]">
                 Groups you own transfer to another active member at final deletion. A group without
@@ -165,7 +165,7 @@ export default function DeleteAccountPage() {
             <article className="rounded-[22px] border border-[var(--color-border-subtle)] bg-[var(--color-bg-surface)] p-6 shadow-sm md:col-span-2">
               <Download className="h-7 w-7 text-[var(--color-brand-teal)]" />
               <h2 className="mt-4 font-display text-2xl font-semibold text-[var(--color-text-primary)]">
-                Before the review deadline
+                Before the cooling period deadline
               </h2>
               <p className="mt-4 leading-7 text-[var(--color-text-secondary)]">
                 You may export your records from Summary. Reviewing balances or settling them is

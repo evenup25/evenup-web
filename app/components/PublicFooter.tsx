@@ -34,6 +34,9 @@ export function PublicFooter() {
             <Link href="/#how-it-works" className="transition hover:text-[var(--color-action-primary)]">
               How it works
             </Link>
+            <Link href="/about/" className="transition hover:text-[var(--color-action-primary)]">
+              About
+            </Link>
             <a
               href="https://play.google.com/store/apps/details?id=in.evenup.app"
               className="transition hover:text-[var(--color-action-primary)]">
