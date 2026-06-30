@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Heart } from "lucide-react";
 
 import { BrandMark } from "./BrandMark";
 
@@ -11,51 +12,58 @@ const footerLinks = [
 
 export function PublicFooter() {
   return (
-    <footer className="border-t border-[var(--color-border-subtle)] bg-[var(--color-brand-navy)] text-white">
-      <div className="mx-auto grid w-full max-w-7xl gap-10 px-5 py-10 sm:px-6 md:grid-cols-[1.5fr_1fr_1fr] lg:px-8">
+    <footer className="border-t border-[var(--color-border-subtle)] bg-[var(--color-bg-surface)] text-[var(--color-text-primary)]">
+      <div className="public-container grid gap-10 py-10 md:grid-cols-[1.8fr_1fr_1fr]">
         <div>
-          <div className="[&_*]:text-white">
-            <BrandMark />
-          </div>
-          <p className="mt-4 max-w-sm text-sm leading-6 text-[var(--color-text-inverse-muted)]">
+          <BrandMark />
+          <p className="mt-4 max-w-sm text-sm leading-6 text-[var(--color-text-secondary)]">
             Shared expenses, clear balances, and support built for groups who want to stay even.
           </p>
-          <p className="mt-4 inline-flex rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-sm font-black text-white">
-            Made with love in India
+          <p className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-[var(--color-border-subtle)] bg-[var(--color-action-soft)] px-3 py-1.5 text-sm font-semibold text-[var(--color-action-primary)]">
+            Made with
+            <Heart className="h-3.5 w-3.5 fill-[var(--color-danger)] text-[var(--color-danger)]" aria-hidden="true" />
+            in India
           </p>
         </div>
         <div>
-          <h2 className="text-sm font-bold text-white">Product</h2>
-          <div className="mt-4 grid gap-3 text-sm text-[var(--color-text-inverse-muted)]">
-            <Link href="/#features" className="transition hover:text-white">
+          <h2 className="text-sm font-bold text-[var(--color-text-primary)]">Product</h2>
+          <div className="mt-4 grid gap-3 text-sm text-[var(--color-text-secondary)]">
+            <Link href="/#features" className="transition hover:text-[var(--color-action-primary)]">
               Features
             </Link>
-            <Link href="/#how-it-works" className="transition hover:text-white">
+            <Link href="/#how-it-works" className="transition hover:text-[var(--color-action-primary)]">
               How it works
             </Link>
             <a
               href="https://play.google.com/store/apps/details?id=in.evenup.app"
-              className="transition hover:text-white">
+              className="transition hover:text-[var(--color-action-primary)]">
               Play Store
             </a>
           </div>
         </div>
         <div>
-          <h2 className="text-sm font-bold text-white">Company</h2>
-          <div className="mt-4 grid gap-3 text-sm text-[var(--color-text-inverse-muted)]">
+          <h2 className="text-sm font-bold text-[var(--color-text-primary)]">Company</h2>
+          <div className="mt-4 grid gap-3 text-sm text-[var(--color-text-secondary)]">
             {footerLinks.map((link) => (
-              <Link key={link.href} href={link.href} className="transition hover:text-white">
+              <Link
+                key={link.href}
+                href={link.href}
+                className="transition hover:text-[var(--color-action-primary)]">
                 {link.label}
               </Link>
             ))}
-            <a href="mailto:support@evenup.in" className="transition hover:text-white">
+            <a
+              href="mailto:support@evenup.in"
+              className="transition hover:text-[var(--color-action-primary)]">
               support@evenup.in
             </a>
           </div>
         </div>
       </div>
-      <div className="border-t border-white/10 px-5 py-5 text-center text-xs text-[var(--color-text-inverse-muted)]">
-        Copyright 2026 EvenUp. All rights reserved.
+      <div className="border-t border-[var(--color-border-subtle)] py-5 text-xs text-[var(--color-text-tertiary)]">
+        <div className="public-container text-center">
+          Copyright 2026 EvenUp. All rights reserved.
+        </div>
       </div>
     </footer>
   );

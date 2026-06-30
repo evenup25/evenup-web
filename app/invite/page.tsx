@@ -41,12 +41,12 @@ export default function InvitePage() {
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-[var(--color-bg-canvas)] px-6">
-      <section className="w-full max-w-md rounded-[28px] border border-[var(--color-border-subtle)] bg-white p-8 text-center shadow-[var(--shadow-card)]">
+      <section className="w-full max-w-md rounded-[24px] border border-[var(--color-border-subtle)] bg-[var(--color-bg-surface)] p-8 text-center shadow-[var(--shadow-card)]">
         <div className="mb-6 flex justify-center">
           <BrandMark />
         </div>
 
-        <h1 className="font-display text-3xl font-black text-[var(--color-text-primary)]">
+        <h1 className="font-display text-3xl font-extrabold text-[var(--color-text-primary)]">
           You are invited
         </h1>
 
@@ -54,7 +54,7 @@ export default function InvitePage() {
           Split bills, track expenses, and stay even with your group.
         </p>
 
-        <div className="mt-6 rounded-2xl bg-[var(--color-bg-surface-alt)] p-4">
+        <div className="mt-6 rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-bg-surface-alt)] p-4">
           <p className="text-sm font-bold text-[var(--color-action-primary)]">
             Opening the EvenUp app...
           </p>

@@ -61,11 +61,11 @@ export default function OpenPage() {
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-[var(--color-bg-canvas)] px-6">
-      <section className="w-full max-w-md rounded-[28px] border border-[var(--color-border-subtle)] bg-white p-8 text-center shadow-[var(--shadow-card)]">
+      <section className="w-full max-w-md rounded-[24px] border border-[var(--color-border-subtle)] bg-[var(--color-bg-surface)] p-8 text-center shadow-[var(--shadow-card)]">
         <div className="mb-6 flex justify-center">
           <BrandMark />
         </div>
-        <h1 className="font-display text-2xl font-black text-[var(--color-text-primary)]">
+        <h1 className="font-display text-2xl font-extrabold text-[var(--color-text-primary)]">
           {linkInfo.title}
         </h1>
         <p className="mt-3 text-sm leading-6 text-[var(--color-text-secondary)]">
@@ -75,12 +75,12 @@ export default function OpenPage() {
         <div className="mt-7 grid gap-3">
           <a
             href={linkInfo.deepLink}
-            className="rounded-full bg-[var(--color-action-primary)] px-5 py-3 text-sm font-extrabold text-white transition hover:bg-[var(--color-action-primary-alt)]">
+            className="rounded-full bg-[var(--color-action-primary)] px-5 py-3 text-sm font-bold text-white transition hover:bg-[var(--color-action-primary-alt)]">
             Open EvenUp
           </a>
           <a
             href={PLAY_STORE_URL}
-            className="rounded-full border border-[var(--color-border-strong)] px-5 py-3 text-sm font-extrabold text-[var(--color-text-primary)] transition hover:border-[var(--color-action-primary)] hover:text-[var(--color-action-primary)]">
+            className="rounded-full border border-[var(--color-border-subtle)] bg-[var(--color-bg-surface)] px-5 py-3 text-sm font-bold text-[var(--color-text-primary)] transition hover:border-[var(--color-border-strong)] hover:text-[var(--color-action-primary)]">
             Get it on Play Store
           </a>
         </div>

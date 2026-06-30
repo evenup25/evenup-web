@@ -40,31 +40,31 @@ export default function SupportPage() {
   return (
     <PublicShell>
       <main>
-        <section className="px-5 py-14 sm:px-6 lg:px-8">
-          <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.9fr_1fr]">
+        <section className="py-12">
+          <div className="public-container grid gap-10 lg:grid-cols-[0.9fr_1fr] lg:items-center">
             <div>
-              <p className="text-sm font-bold uppercase tracking-[0.14em] text-[var(--color-action-primary)]">
+              <p className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--color-action-primary)]">
                 Support
               </p>
-              <h1 className="mt-3 font-display text-5xl font-black leading-tight text-[var(--color-text-primary)]">
+              <h1 className="mt-3 font-display text-3xl font-semibold leading-tight text-[var(--color-text-primary)] sm:text-4xl">
                 We are here to help you stay even.
               </h1>
-              <p className="mt-5 max-w-xl text-lg leading-8 text-[var(--color-text-secondary)]">
+              <p className="mt-4 max-w-xl text-base leading-7 text-[var(--color-text-secondary)]">
                 For account-specific help, the best route is Help & Support inside the app. For
                 general support, email us and we will get back to you.
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <a
                   href="mailto:support@evenup.in"
-                  className="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--color-action-primary)] px-6 py-3 text-sm font-extrabold text-white shadow-[var(--shadow-brand)] transition hover:bg-[var(--color-action-primary-alt)]">
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--color-action-primary)] px-5 py-3 text-sm font-semibold leading-none text-white shadow-[var(--shadow-brand)] transition hover:bg-[var(--color-action-primary-alt)]">
                   Email support
-                  <Mail className="h-4 w-4" />
+                  <Mail className="h-4 w-4 shrink-0 translate-y-px" />
                 </a>
                 <a
                   href={PLAY_STORE_URL}
-                  className="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--color-border-strong)] bg-white px-6 py-3 text-sm font-extrabold text-[var(--color-text-primary)] transition hover:border-[var(--color-action-primary)] hover:text-[var(--color-action-primary)]">
+                  className="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--color-border-subtle)] bg-[var(--color-bg-surface)] px-5 py-3 text-sm font-semibold leading-none text-[var(--color-text-primary)] transition hover:border-[var(--color-border-strong)] hover:text-[var(--color-action-primary)]">
                   Get the app
-                  <ArrowRight className="h-4 w-4" />
+                  <ArrowRight className="h-4 w-4 shrink-0 translate-y-px" />
                 </a>
               </div>
             </div>
@@ -96,13 +96,13 @@ export default function SupportPage() {
                 return (
                   <article
                     key={item.title}
-                    className="rounded-[24px] border border-[var(--color-border-subtle)] bg-white p-5 shadow-sm">
+                    className="rounded-[20px] border border-[var(--color-border-subtle)] bg-[var(--color-bg-surface)] p-5 shadow-sm">
                     <div className="flex items-start gap-4">
-                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[rgba(43,127,255,0.12)] text-[var(--color-action-primary)]">
+                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[var(--color-action-soft)] text-[var(--color-action-primary)]">
                         <Icon className="h-5 w-5" />
                       </div>
                       <div>
-                        <h2 className="font-display text-xl font-extrabold text-[var(--color-text-primary)]">
+                        <h2 className="font-display text-lg font-bold text-[var(--color-text-primary)]">
                           {item.title}
                         </h2>
                         <p className="mt-2 text-sm leading-6 text-[var(--color-text-secondary)]">
@@ -117,17 +117,17 @@ export default function SupportPage() {
           </div>
         </section>
 
-        <section className="bg-white px-5 py-14 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-4xl">
-            <h2 className="font-display text-3xl font-black text-[var(--color-text-primary)]">
+        <section className="bg-[var(--color-bg-surface)] py-14">
+          <div className="public-container">
+            <h2 className="font-display text-3xl font-semibold text-[var(--color-text-primary)]">
               Common questions
             </h2>
-            <div className="mt-7 grid gap-4">
+            <div className="mt-7 grid gap-4 lg:grid-cols-2">
               {faqs.map((faq) => (
                 <article
                   key={faq.question}
-                  className="rounded-[24px] border border-[var(--color-border-subtle)] bg-[var(--color-bg-surface)] p-5 shadow-sm">
-                  <h3 className="font-display text-lg font-extrabold text-[var(--color-text-primary)]">
+                  className="rounded-[20px] border border-[var(--color-border-subtle)] bg-[var(--color-bg-surface-alt)] p-5 shadow-sm">
+                  <h3 className="font-display text-lg font-bold text-[var(--color-text-primary)]">
                     {faq.question}
                   </h3>
                   <p className="mt-3 leading-7 text-[var(--color-text-secondary)]">{faq.answer}</p>
