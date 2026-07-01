@@ -29,8 +29,16 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "Support",
-  description: "Get help with EvenUp, account access, data requests, and shared expense issues.",
+  title: "EvenUp Support - Help with Shared Expenses and Account Access",
+  description:
+    "Contact EvenUp support for help with account access, shared expense tracking, privacy requests, account deletion, and app handoff issues.",
+  keywords: [
+    "EvenUp support",
+    "EvenUp help",
+    "shared expense app support",
+    "bill splitting app help",
+    "EvenUp account deletion",
+  ],
   alternates: {
     canonical: "/support/",
   },

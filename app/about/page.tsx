@@ -13,9 +13,16 @@ import { PlayStoreBadge } from "../components/PlayStoreBadge";
 import { PublicShell } from "../components/PublicShell";
 
 export const metadata: Metadata = {
-  title: "About EvenUp",
+  title: "About EvenUp - Shared Expense Tracker for Groups",
   description:
-    "EvenUp is a shared ledger for everyday groups, built to keep expenses, balances, and settlements clear.",
+    "Learn about EvenUp, a shared expense tracker for friends, flatmates, families, and groups who split bills and track balances.",
+  keywords: [
+    "about EvenUp",
+    "shared expense tracker",
+    "split bills with friends",
+    "group expense tracker",
+    "expense sharing app India",
+  ],
   alternates: {
     canonical: "/about/",
   },
