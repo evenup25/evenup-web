@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import {
   CheckCircle2,
@@ -9,8 +10,30 @@ import {
   WalletCards,
 } from "lucide-react";
 
+import { JsonLd } from "./components/JsonLd";
 import { PlayStoreBadge } from "./components/PlayStoreBadge";
 import { PublicShell } from "./components/PublicShell";
+
+export const metadata: Metadata = {
+  title: "EvenUp - Split Bills & Track Shared Expenses",
+  description:
+    "EvenUp is a shared expense tracker for friends and groups. Split bills, track balances, manage receipts, and settle clearly without bank details.",
+  keywords: [
+    "split bills",
+    "shared expense tracker",
+    "bill splitting app",
+    "expense tracker for friends",
+    "group expense tracker",
+    "split expenses",
+    "track shared expenses",
+    "trip expense splitter",
+    "flat expenses app",
+    "settle balances",
+  ],
+  alternates: {
+    canonical: "/",
+  },
+};
 
 const trustItems = [
   "No ads",
@@ -90,6 +113,64 @@ const faqs = [
   },
 ];
 
+const homeJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://evenup.in/#organization",
+      name: "EvenUp",
+      url: "https://evenup.in/",
+      logo: "https://evenup.in/icon.png",
+      sameAs: ["https://play.google.com/store/apps/details?id=in.evenup.app"],
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://evenup.in/#website",
+      name: "EvenUp",
+      url: "https://evenup.in/",
+      publisher: { "@id": "https://evenup.in/#organization" },
+      inLanguage: "en-IN",
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://evenup.in/#android-app",
+      name: "EvenUp",
+      applicationCategory: "FinanceApplication",
+      operatingSystem: "Android",
+      url: "https://evenup.in/",
+      installUrl: "https://play.google.com/store/apps/details?id=in.evenup.app",
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "INR",
+      },
+      description:
+        "EvenUp helps friends, flatmates, families, and groups split bills, track shared expenses, manage balances, and record settlements.",
+      featureList: [
+        "Split bills with friends and groups",
+        "Track shared expenses and balances",
+        "Record settlements outside the app",
+        "Attach notes and receipts",
+        "No bank, card, UPI, or wallet details required",
+      ],
+      publisher: { "@id": "https://evenup.in/#organization" },
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://evenup.in/#faq",
+      mainEntity: faqs.map((faq) => ({
+        "@type": "Question",
+        name: faq.question,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: faq.answer,
+        },
+      })),
+    },
+  ],
+};
+
 function HeroBanner() {
   return (
     <div className="w-full overflow-hidden bg-[var(--color-bg-surface)]">
@@ -119,12 +200,13 @@ export default function HomePage() {
   return (
     <PublicShell>
       <main>
+        <JsonLd data={homeJsonLd} />
         <section className="bg-[var(--color-bg-surface)]">
           <div className="sr-only">
-            <h1>EvenUp helps groups split bills and keep shared balances clear.</h1>
+            <h1>EvenUp is a shared expense tracker to split bills and track group balances.</h1>
             <p>
-              Track trips, flat expenses, family plans, office lunches, settlements, and shared
-              balances without ads, bank details, or payments inside the app.
+              Track trips, flat expenses, family plans, office lunches, shared bills, settlements,
+              and group balances without ads, bank details, or payments inside the app.
             </p>
           </div>
           <HeroBanner />
