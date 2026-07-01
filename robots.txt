@@ -1,0 +1,7 @@
+User-Agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /invite/
+Disallow: /open/
+
+Sitemap: https://evenup.in/sitemap.xml
